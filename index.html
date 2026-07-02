@@ -446,8 +446,6 @@
             document.getElementById('p-orders').innerText = (live.pendingOrders || 0).toLocaleString();
             document.getElementById('p-lines').innerText = (live.pendingLines || 0).toLocaleString();
             document.getElementById('p-units').innerText = (live.pendingUnits || 0).toLocaleString();
-            document.getElementById('p-inward-orders').innerText = (live.pendingInwardOrders || 0).toLocaleString();
-            document.getElementById('p-inward-qty').innerText = (live.pendingInwardQty || 0).toLocaleString();
 
             const sd = data.singleDayWorkspace.totals || { orders: 0, lines: 0, picks: 0, hours: 0, inwardTotes: 0, inwardQty: 0, ccTotes: 0, ccCorrections: 0 };
             document.getElementById('m-orders').innerText = sd.orders.toLocaleString();
