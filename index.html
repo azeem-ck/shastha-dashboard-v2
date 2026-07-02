@@ -19,10 +19,10 @@
             color-scheme: dark;
         }
 
-        /* Forces the calendar icon to be highly visible and crisp */
+        /* 🌟 FIX: Force the invisible calendar icon to be highly visible and crisp */
         input[type="date"]::-webkit-calendar-picker-indicator {
             cursor: pointer;
-            filter: invert(1) brightness(1.8);
+            filter: invert(1) brightness(1.8); /* Pulls the icon completely out of the shadows */
             opacity: 1 !important;
             padding: 2px;
             transition: transform 0.15s ease-in-out;
@@ -51,7 +51,7 @@
                         Customer Dashboard <span class="text-[#209d74]">/</span> CARTE+
                     </h1>
                     <p class="text-[11px] text-slate-600 flex items-center gap-1 mt-0.5">
-                        <i class="fa-solid fa-location-dot text-[#209d74]"></i> Region: America/San Francisco
+                        <i class="fa-solid fa-location-dot text-[#209d74]"></i> Region: America/Kentucky/Louisville Lock
                     </p>
                 </div>
             </div>
@@ -124,6 +124,25 @@
                             <p class="text-[10px] text-[#5e6b66] mt-0.5">Across all orders</p>
                         </div>
                         <div class="bg-[#241d08] text-[#ffc107] p-3 rounded-lg border border-[#3a2e0c]"><i class="fa-solid fa-cubes text-xl"></i></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-[#1d2c27]/60 pt-3">
+                    <div class="bg-[#111a17] p-4 rounded-xl border border-[#209d74]/30 flex items-center justify-between shadow-xs">
+                        <div>
+                            <p class="text-[10px] font-black text-[#7da6a6] uppercase tracking-widest">Total Pending Inward Orders</p>
+                            <h3 id="p-inward-orders" class="text-2xl font-black text-[#ffc107] tracking-tight mt-1">0</h3>
+                            <p class="text-[10px] text-[#5e6b66] mt-0.5">Awaiting in the staging area</p>
+                        </div>
+                        <div class="bg-[#0c221a] text-[#ffc107] p-2.5 rounded-lg border border-[#163a2d]"><i class="fa-solid fa-boxes-arrow-into-box text-lg"></i></div>
+                    </div>
+                    <div class="bg-[#111a17] p-4 rounded-xl border border-[#209d74]/30 flex items-center justify-between shadow-xs">
+                        <div>
+                            <p class="text-[10px] font-black text-[#7da6a6] uppercase tracking-widest">Total Pending Inward Qty</p>
+                            <h3 id="p-inward-qty" class="text-2xl font-black text-[#ffc107] tracking-tight mt-1">0</h3>
+                            <p class="text-[10px] text-[#5e6b66] mt-0.5">Net inward item count across totes</p>
+                        </div>
+                        <div class="bg-[#0c221a] text-[#ffc107] p-2.5 rounded-lg border border-[#163a2d]"><i class="fa-solid fa-pallet text-lg"></i></div>
                     </div>
                 </div>
             </div>
@@ -246,7 +265,7 @@
                     </div>
                     <div>
                         <h2 class="text-xs font-black tracking-widest text-[#e7ebea] uppercase">Macro Trend Exploration Workspace</h2>
-                        <p class="text-[11px] text-[#7da6a6]">Historical metrics and past average throughputs</p>
+                        <p class="text-[11px] text-[#7da6a6]">Historical metrics and past average througputs</p>
                     </div>
                 </div>
                 <div class="flex flex-wrap items-center gap-3 text-xs">
@@ -259,7 +278,7 @@
                         <input type="date" id="macro-end" onclick="this.showPicker()" class="bg-[#162420] border border-[#354e47] rounded-lg px-2 py-1 text-white font-mono font-bold tracking-wide focus:outline-hidden focus:ring-1 focus:ring-[#209d74] focus:border-[#209d74] transition-all shadow-inner">
                     </div>
                     <button onclick="refreshDashboardData(false)" class="bg-[#209d74] hover:bg-[#1b8562] text-white font-black px-4 py-1.5 rounded-lg cursor-pointer transition-colors shadow-xs uppercase tracking-wider text-[11px]">
-                        Apply Range Filter
+                        Apply  Filter
                     </button>
                 </div>
             </div>
@@ -267,7 +286,7 @@
             <div class="space-y-2">
                 <div class="flex items-center gap-2 text-xs text-[#7da6a6] pl-1">
                     <i class="fa-solid fa-sigma text-[#4fb0c2]"></i>
-                    <span class="font-black text-[#e7ebea] uppercase tracking-wider text-[10px]">Filtered Range Aggregations</span>
+                    <span class="font-black text-[#e7ebea] uppercase tracking-wider text-[10px]">Filtered  Aggregations</span>
                     <span class="text-[#5e6b66]">(Summed workspace performance metrics for selected window)</span>
                 </div>
                 
@@ -376,13 +395,12 @@
     </footer>
 
     <script>
-        const API_BASE_URL = "https://script.google.com/macros/s/AKfycbzFxUt9gW5ysMxSJRwjhXXXUQtcRg6I0h5tBTrPwVyNDrDzDJBv4lYpMOG9NbOrDoPemQ/exec";
+        const API_BASE_URL = "https://script.google.com/macros/s/AKfycbznO4TwopqUw0hxaVgckD0rX5BuFhz7I7CcTTGFs5TZng0VqcnB-voLsqVVfjlphYr2/exec";
         let chartInstances = {};
 
-        // Brand Theme Color Matrix mapping Shastha Profiles
-        const COLOR_PRIMARY = "#209D74";   
-        const COLOR_SECONDARY = "#7DA6A6"; 
-        const COLOR_TERTIARY = "#4FB0C2";  
+        const COLOR_PRIMARY = "#52C79F";   
+        const COLOR_SECONDARY = "#EAB71C"; 
+        const COLOR_TERTIARY = "#FFFFFF";  
         const COLOR_BORDER = "#1d2c27";    
 
         document.addEventListener("DOMContentLoaded", () => {
@@ -407,7 +425,7 @@
             const macroEnd = document.getElementById('macro-end').value;
 
             let queryUrl = `${API_BASE_URL}?start=${macroStart}&end=${macroEnd}`;
-            if (singleDate) {
+            if (!isFirstLoad && singleDate) {
                 queryUrl += `&singleDate=${singleDate}`;
             }
 
@@ -442,13 +460,14 @@
                 }
             }
 
-            // POPULATE LIVE EXPANDED OUTBOUND VALUES (WWM Queue Only)
-            const live = data.livePending || { pendingOrders: 0, pendingLines: 0, pendingUnits: 0 };
+            // POPULATE LIVE EXPANDED PENDING VALUES
+            const live = data.livePending || { pendingOrders: 0, pendingLines: 0, pendingUnits: 0, pendingInwardOrders: 0, pendingInwardQty: 0 };
             document.getElementById('p-orders').innerText = (live.pendingOrders || 0).toLocaleString();
             document.getElementById('p-lines').innerText = (live.pendingLines || 0).toLocaleString();
             document.getElementById('p-units').innerText = (live.pendingUnits || 0).toLocaleString();
+            document.getElementById('p-inward-orders').innerText = (live.pendingInwardOrders || 0).toLocaleString();
+            document.getElementById('p-inward-qty').innerText = (live.pendingInwardQty || 0).toLocaleString();
 
-            // POPULATE HISTORICAL VALUES MATRIX FROM LEDGER DATA
             const sd = data.singleDayWorkspace.totals || { orders: 0, lines: 0, picks: 0, hours: 0, inwardTotes: 0, inwardQty: 0, ccTotes: 0, ccCorrections: 0 };
             document.getElementById('m-orders').innerText = sd.orders.toLocaleString();
             document.getElementById('m-lines').innerText = sd.lines.toLocaleString();
@@ -501,7 +520,6 @@
             if (chartInstances[id]) { chartInstances[id].destroy(); }
         }
 
-        // UPGRADED TO UPH ONLY DISPLAY (Matches Code 1 Layout Specification)
         function buildChartHourlyRates(hourlyTimeline) {
             clearChartInstance('hourlyRates');
             const ctx = document.getElementById('chart-hourly-rates').getContext('2d');
@@ -577,7 +595,6 @@
             });
         }
 
-        // UPGRADED TO HISTORICAL DAILY AVERAGE UPH ONLY DISPLAY
         function buildChartHistoricalAverages(averagesChart) {
             clearChartInstance('historicalAverages');
             const ctx = document.getElementById('chart-historical-averages').getContext('2d');
