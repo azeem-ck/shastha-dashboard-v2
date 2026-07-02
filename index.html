@@ -8,27 +8,23 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Custom scrollbar matching brand theme */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #090e0c; }
         ::-webkit-scrollbar-thumb { background: #1d2c27; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #209d74; }
 
-        /* Forces browser native calendar picker icons to render bright white in dark mode */
         input[type="date"] {
             color-scheme: dark;
         }
 
-        /* 🌟 FIX: Force the invisible calendar icon to be highly visible and crisp */
         input[type="date"]::-webkit-calendar-picker-indicator {
             cursor: pointer;
-            filter: invert(1) brightness(1.8); /* Pulls the icon completely out of the shadows */
+            filter: invert(1) brightness(1.8);
             opacity: 1 !important;
             padding: 2px;
             transition: transform 0.15s ease-in-out;
         }
 
-        /* Subtle zoom effect when hovering over the calendar selector icon button */
         input[type="date"]::-webkit-calendar-picker-indicator:hover {
             transform: scale(1.15);
         }
@@ -38,12 +34,9 @@
 
     <header class="bg-[#eef2f5] border-b border-slate-300 sticky top-0 z-50 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-            
             <div class="flex items-center gap-4">
                 <div class="flex items-center justify-center p-1 rounded-lg">
-                    <img src="https://cartesiankinetics.com/wp-content/uploads/2025/06/logo-org.png" 
-                         alt="Cartesian Kinetics Logo" 
-                         class="h-11 w-auto object-contain">
+                    <img src="https://cartesiankinetics.com/wp-content/uploads/2025/06/logo-org.png" alt="Cartesian Kinetics Logo" class="h-11 w-auto object-contain">
                 </div>
                 <div class="hidden sm:block border-l border-slate-300 h-8"></div>
                 <div>
@@ -59,9 +52,7 @@
             <div class="flex items-center gap-5 text-right">
                 <div class="hidden md:flex flex-col justify-center items-end border-r border-slate-300 pr-5 h-10">
                     <span class="text-[10px] uppercase font-bold tracking-widest text-slate-500 mb-0.5">Operational Partner</span>
-                    <img src="https://shasthafoods.com/wp-content/uploads/2023/11/Shastha-Logo.png" 
-                         alt="Shastha Foods Logo" 
-                         class="h-6 w-auto object-contain mix-blend-multiply">
+                    <img src="https://shasthafoods.com/wp-content/uploads/2023/11/Shastha-Logo.png" alt="Shastha Foods Logo" class="h-6 w-auto object-contain mix-blend-multiply">
                 </div>
                 <div>
                     <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold bg-[#0c221a] text-[#209d74] border border-[#163a2d]">
@@ -75,7 +66,6 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
-
         <section class="space-y-4">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#111a17] p-4 rounded-xl border border-[#1d2c27] shadow-md">
                 <div class="flex items-center gap-2.5">
@@ -368,7 +358,6 @@
                 </div>
             </div>
         </section>
-
     </main>
 
     <footer class="max-w-7xl mx-auto px-4 text-center py-8 border-t border-[#131d1a] text-[#5e6b66] text-[10px] tracking-wide">
@@ -423,9 +412,9 @@
         }
 
         function renderWorkspaceComponents(data) {
-            document.getElementById('engine-sync-time').innerText = `Engine Sync Time: ${data.lastRefreshed || 'N/A'}`;
+            document.getElementById('engine-sync-time').innerText = `Engine Sync Time: ${data?.lastRefreshed || 'N/A'}`;
 
-            if (data.singleDayWorkspace && data.singleDayWorkspace.date) {
+            if (data?.singleDayWorkspace && data.singleDayWorkspace.date) {
                 const serverTargetDate = data.singleDayWorkspace.date;
                 
                 document.getElementById('single-date').value = serverTargetDate;
@@ -442,15 +431,15 @@
             }
 
             // POPULATE LIVE EXPANDED PENDING VALUES
-            const live = data.livePending || { pendingOrders: 0, pendingLines: 0, pendingUnits: 0, pendingInwardOrders: 0, pendingInwardQty: 0 };
+            const live = data?.livePending || { pendingOrders: 0, pendingLines: 0, pendingUnits: 0 };
             document.getElementById('p-orders').innerText = (live.pendingOrders || 0).toLocaleString();
             document.getElementById('p-lines').innerText = (live.pendingLines || 0).toLocaleString();
             document.getElementById('p-units').innerText = (live.pendingUnits || 0).toLocaleString();
 
-            const sd = data.singleDayWorkspace.totals || { orders: 0, lines: 0, picks: 0, hours: 0, inwardTotes: 0, inwardQty: 0, ccTotes: 0, ccCorrections: 0 };
-            document.getElementById('m-orders').innerText = sd.orders.toLocaleString();
-            document.getElementById('m-lines').innerText = sd.lines.toLocaleString();
-            document.getElementById('m-picks').innerText = sd.picks.toLocaleString();
+            const sd = data?.singleDayWorkspace?.totals || { orders: 0, lines: 0, picks: 0, hours: 0, inwardTotes: 0, inwardQty: 0, ccTotes: 0, ccCorrections: 0 };
+            document.getElementById('m-orders').innerText = (sd.orders || 0).toLocaleString();
+            document.getElementById('m-lines').innerText = (sd.lines || 0).toLocaleString();
+            document.getElementById('m-picks').innerText = (sd.picks || 0).toLocaleString();
             
             document.getElementById('m-inward-totes').innerText = (sd.inwardTotes || 0).toLocaleString();
             document.getElementById('m-inward-qty').innerText = (sd.inwardQty || 0).toLocaleString();
@@ -462,7 +451,7 @@
             document.getElementById('t-lines').innerText = `${singleHours > 0 ? (sd.lines / singleHours).toFixed(1) : "0.0"} / hr`;
             document.getElementById('t-picks').innerText = `${singleHours > 0 ? (sd.picks / singleHours).toFixed(1) : "0.0"} / hr`;
 
-            const trendData = data.macroWorkspace.trendChart || [];
+            const trendData = data?.macroWorkspace?.trendChart || [];
             let aggregateOrders = 0;
             let aggregateLines = 0;
             let aggregatePicks = 0;
@@ -489,10 +478,10 @@
             document.getElementById('macro-total-cc-totes').innerText = aggregateCcTotes.toLocaleString();
             document.getElementById('macro-total-cc-corrections').innerText = aggregateCcCorrections.toLocaleString();
 
-            buildChartHourlyRates(data.singleDayWorkspace.hourlyTimeline);
-            buildChartHourlyCounts(data.singleDayWorkspace.hourlyTimeline);
-            buildChartMacroProgression(data.macroWorkspace.trendChart);
-            buildChartHistoricalAverages(data.macroWorkspace.averagesChart);
+            buildChartHourlyRates(data?.singleDayWorkspace?.hourlyTimeline || []);
+            buildChartHourlyCounts(data?.singleDayWorkspace?.hourlyTimeline || []);
+            buildChartMacroProgression(data?.macroWorkspace?.trendChart || []);
+            buildChartHistoricalAverages(data?.macroWorkspace?.averagesChart || []);
         }
 
         function clearChartInstance(id) {
@@ -501,7 +490,9 @@
 
         function buildChartHourlyRates(hourlyTimeline) {
             clearChartInstance('hourlyRates');
-            const ctx = document.getElementById('chart-hourly-rates').getContext('2d');
+            const canvas = document.getElementById('chart-hourly-rates');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
             
             chartInstances['hourlyRates'] = new Chart(ctx, {
                 type: 'bar',
@@ -524,7 +515,9 @@
 
         function buildChartHourlyCounts(hourlyTimeline) {
             clearChartInstance('hourlyCounts');
-            const ctx = document.getElementById('chart-hourly-counts').getContext('2d');
+            const canvas = document.getElementById('chart-hourly-counts');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
 
             chartInstances['hourlyCounts'] = new Chart(ctx, {
                 type: 'line',
@@ -550,7 +543,9 @@
 
         function buildChartMacroProgression(trendChart) {
             clearChartInstance('macroProgression');
-            const ctx = document.getElementById('chart-macro-progression').getContext('2d');
+            const canvas = document.getElementById('chart-macro-progression');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
 
             chartInstances['macroProgression'] = new Chart(ctx, {
                 type: 'line',
@@ -576,7 +571,9 @@
 
         function buildChartHistoricalAverages(averagesChart) {
             clearChartInstance('historicalAverages');
-            const ctx = document.getElementById('chart-historical-averages').getContext('2d');
+            const canvas = document.getElementById('chart-historical-averages');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
 
             chartInstances['historicalAverages'] = new Chart(ctx, {
                 type: 'bar',
