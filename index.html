@@ -41,7 +41,7 @@
                 <div class="hidden md:flex flex-col justify-center items-end border-r border-slate-300 pr-5 h-10">
                     <span class="text-[10px] uppercase font-bold tracking-widest text-slate-500 mb-0.5">Operational Partner</span>
                     <img src="https://shasthafoods.com/wp-content/uploads/2023/11/Shastha-Logo.png" 
-                         alt="Shastha Solutions Logo" 
+                         alt="Shastha Foods Logo" 
                          class="h-6 w-auto object-contain mix-blend-multiply">
                 </div>
                 <div>
@@ -145,20 +145,20 @@
             <div class="flex flex-col gap-6 pt-2">
                 <div class="bg-[#111a17] p-5 rounded-xl border border-[#1d2c27] space-y-4 shadow-xs">
                     <div>
-                        <h4 class="text-xs font-black text-white tracking-wider uppercase">Carte+ Hourly Throughput (LPH & UPH)</h4>
-                        <p class="text-[11px] text-[#7da6a6] mt-0.5">Units and lines picked sequentially by execution duration inside hour blocks</p>
-                    </div>
-                    <div class="relative h-72 w-full">
-                        <canvas id="chart-hourly-rates"></canvas>
-                    </div>
-                </div>
-                <div class="bg-[#111a17] p-5 rounded-xl border border-[#1d2c27] space-y-4 shadow-xs">
-                    <div>
                         <h4 class="text-xs font-black text-white tracking-wider uppercase">Hourly Actual Counts</h4>
                         <p class="text-[11px] text-[#7da6a6] mt-0.5">Absolute operational counts processed within each chronological hour boundary</p>
                     </div>
                     <div class="relative h-72 w-full">
                         <canvas id="chart-hourly-counts"></canvas>
+                    </div>
+                </div>
+                <div class="bg-[#111a17] p-5 rounded-xl border border-[#1d2c27] space-y-4 shadow-xs">
+                    <div>
+                        <h4 class="text-xs font-black text-white tracking-wider uppercase">Carte+ Hourly Throughput (LPH & UPH)</h4>
+                        <p class="text-[11px] text-[#7da6a6] mt-0.5">Units and lines picked sequentially by execution duration inside hour blocks</p>
+                    </div>
+                    <div class="relative h-72 w-full">
+                        <canvas id="chart-hourly-rates"></canvas>
                     </div>
                 </div>
             </div>
@@ -263,12 +263,10 @@
 
         document.addEventListener("DOMContentLoaded", () => {
             initializeMacroBounds();
-            // Perform primary backend-driven data fetch execution
             refreshDashboardData(true);
         });
 
         function initializeMacroBounds() {
-            // Setup macro calendar ranges cleanly based on standard execution clocks
             const localOffsetDate = new Date();
             const formattedToday = localOffsetDate.toISOString().split('T')[0];
             
@@ -284,8 +282,6 @@
             const macroStart = document.getElementById('macro-start').value;
             const macroEnd = document.getElementById('macro-end').value;
 
-            // STRATEGY FIX: On initial page load, omit explicit singleDate parameters.
-            // This forces the backend engine to pull metrics matching its true, absolute timezone clock.
             let queryUrl = `${API_BASE_URL}?start=${macroStart}&end=${macroEnd}`;
             if (!isFirstLoad && singleDate) {
                 queryUrl += `&singleDate=${singleDate}`;
@@ -306,15 +302,12 @@
         function renderWorkspaceComponents(data) {
             document.getElementById('engine-sync-time').innerText = `Engine Sync Time: ${data.lastRefreshed || 'N/A'}`;
 
-            // SYNC DATE SELECTION ELEMENTS WITH SERVER CONTEXT
             if (data.singleDayWorkspace && data.singleDayWorkspace.date) {
                 const serverTargetDate = data.singleDayWorkspace.date;
                 
-                // Keep selector and workspace indicators dynamically aligned
                 document.getElementById('single-date').value = serverTargetDate;
                 document.getElementById('target-date-label').innerText = `(${serverTargetDate})`;
 
-                // DYNAMIC HEADER TEXT ASSIGNMENT EVALUATION
                 if (data.lastRefreshed) {
                     const engineSyncDate = data.lastRefreshed.split(' ')[0];
                     if (serverTargetDate === engineSyncDate) {
@@ -340,7 +333,6 @@
             document.getElementById('t-lines').innerText = `${singleHours > 0 ? (sd.lines / singleHours).toFixed(1) : "0.0"} / hr`;
             document.getElementById('t-picks').innerText = `${singleHours > 0 ? (sd.picks / singleHours).toFixed(1) : "0.0"} / hr`;
 
-            // DYNAMIC CALCULATION AND POPULATION FOR MACRO WORKSPACE RANGE TOTALS
             const trendData = data.macroWorkspace.trendChart || [];
             let aggregateOrders = 0;
             let aggregateLines = 0;
