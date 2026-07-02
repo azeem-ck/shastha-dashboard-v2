@@ -407,7 +407,7 @@
             const macroEnd = document.getElementById('macro-end').value;
 
             let queryUrl = `${API_BASE_URL}?start=${macroStart}&end=${macroEnd}`;
-            if (!isFirstLoad && singleDate) {
+            if (singleDate) {
                 queryUrl += `&singleDate=${singleDate}`;
             }
 
