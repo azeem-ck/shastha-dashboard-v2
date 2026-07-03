@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shastha Carte+ Dashboard | Cartesian Kinetics</title>
+    <link rel="icon" type="image/png" href="https://supervisor.hji.carteplus.io/favicon.svg">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -97,7 +98,7 @@
                             <h3 id="p-orders" class="text-3xl font-black text-[#ffc107] tracking-tight mt-1">0</h3>
                             <p class="text-[10px] text-[#5e6b66] mt-0.5">Active non-cancelled queue</p>
                         </div>
-                        <div class="bg-[#241d08] text-[#ffc107] p-3 rounded-lg border border-[#3a2e0c]"><i class="fa-solid fa-folder text-xl"></i></div>
+                        <div class="bg-[#241d08] text-[#ffc107] p-3 rounded-lg border border-[#3a2e0c]"><i class="fa-solid fa-boxes-stacked text-xl"></i></div>
                     </div>
                     <div class="bg-[#111a17] p-5 rounded-xl border border-[#1d2c27] flex items-center justify-between shadow-xs">
                         <div>
@@ -105,15 +106,15 @@
                             <h3 id="p-lines" class="text-3xl font-black text-[#ffc107] tracking-tight mt-1">0</h3>
                             <p class="text-[10px] text-[#5e6b66] mt-0.5">Excludes external item lines</p>
                         </div>
-                        <div class="bg-[#241d08] text-[#ffc107] p-3 rounded-lg border border-[#3a2e0c]"><i class="fa-solid fa-list-ul text-xl"></i></div>
+                        <div class="bg-[#241d08] text-[#ffc107] p-3 rounded-lg border border-[#3a2e0c]"><i class="fa-solid fa-receipt text-xl"></i></div>
                     </div>
                     <div class="bg-[#111a17] p-5 rounded-xl border border-[#1d2c27] flex items-center justify-between shadow-xs">
                         <div>
-                            <p class="text-[10px] font-black text-[#7da6a6] uppercase tracking-widest">Total Pending Units</p>
+                            <p class="text-[10px] font-black text-[#7da6a6] uppercase tracking-widest">Total Pending Quantity</p>
                             <h3 id="p-units" class="text-3xl font-black text-[#ffc107] tracking-tight mt-1">0</h3>
                             <p class="text-[10px] text-[#5e6b66] mt-0.5">Across all orders</p>
                         </div>
-                        <div class="bg-[#241d08] text-[#ffc107] p-3 rounded-lg border border-[#3a2e0c]"><i class="fa-solid fa-cubes text-xl"></i></div>
+                        <div class="bg-[#241d08] text-[#ffc107] p-3 rounded-lg border border-[#3a2e0c]"><i class="fa-solid fa-layer-group text-xl"></i></div>
                     </div>
                 </div>
             </div>
@@ -137,7 +138,7 @@
                                     <h3 id="m-orders" class="text-xl font-black text-white mt-0.5">0</h3>
                                     <p id="t-orders" class="text-[9px] text-[#209d74] font-mono font-bold mt-1 bg-[#090e0c] px-1.5 py-0.5 rounded-sm inline-block">0.0/hr</p>
                                 </div>
-                                <div class="text-[#4fb0c2] opacity-80"><i class="fa-solid fa-box text-md"></i></div>
+                                <div class="text-[#4fb0c2] opacity-80"><i class="fa-solid fa-boxes-stacked text-md"></i></div>
                             </div>
                             <div class="bg-[#090e0c]/50 p-3 rounded-lg border border-[#1d2c27]/70 flex items-center justify-between">
                                 <div>
@@ -153,7 +154,7 @@
                                     <h3 id="m-picks" class="text-xl font-black text-white mt-0.5">0</h3>
                                     <p id="t-picks" class="text-[9px] text-[#209d74] font-mono font-bold mt-1 bg-[#090e0c] px-1.5 py-0.5 rounded-sm inline-block">0.0/hr</p>
                                 </div>
-                                <div class="text-[#209d74] opacity-80"><i class="fa-solid fa-dolly text-md"></i></div>
+                                <div class="text-[#209d74] opacity-80"><i class="fa-solid fa-layer-group text-md"></i></div>
                             </div>
                         </div>
                     </div>
@@ -168,14 +169,14 @@
                                     <p class="text-[9px] font-bold text-[#7da6a6] uppercase">Totes Inwarded</p>
                                     <h3 id="m-inward-totes" class="text-xl font-black text-white mt-0.5">0</h3>
                                 </div>
-                                <div class="text-[#4fb0c2] opacity-75"><i class="fa-solid fa-arrow-to-bottom text-md"></i></div>
+                                <div class="text-[#4fb0c2] opacity-75"><i class="fa-solid fa-download text-md"></i></div>
                             </div>
                             <div class="bg-[#090e0c]/50 p-3 rounded-lg border border-[#1d2c27]/70 flex items-center justify-between">
                                 <div>
-                                    <p class="text-[9px] font-bold text-[#7da6a6] uppercase">Qty Inwarded</p>
+                                    <p class="text-[9px] font-bold text-[#7da6a6] uppercase">Quantity Inwarded</p>
                                     <h3 id="m-inward-qty" class="text-xl font-black text-white mt-0.5">0</h3>
                                 </div>
-                                <div class="text-[#4fb0c2] opacity-75"><i class="fa-solid fa-boxes-arrow-into-box text-md"></i></div>
+                                <div class="text-[#4fb0c2] opacity-75"><i class="fa-solid fa-cart-flatbed text-md"></i></div>
                             </div>
                         </div>
                     </div>
@@ -190,14 +191,14 @@
                                     <p class="text-[9px] font-bold text-[#7da6a6] uppercase">Totes Counted</p>
                                     <h3 id="m-cc-totes" class="text-xl font-black text-white mt-0.5">0</h3>
                                 </div>
-                                <div class="text-[#7da6a6] opacity-75"><i class="fa-solid fa-calculator text-md"></i></div>
+                                <div class="text-[#7da6a6] opacity-75"><i class="fa-solid fa-clipboard-check text-md"></i></div>
                             </div>
                             <div class="bg-[#090e0c]/50 p-3 rounded-lg border border-[#1d2c27]/70 flex items-center justify-between">
                                 <div>
                                     <p class="text-[9px] font-bold text-[#7da6a6] uppercase">Corrections</p>
                                     <h3 id="m-cc-corrections" class="text-xl font-black text-[#ffc107] mt-0.5">0</h3>
                                 </div>
-                                <div class="text-[#ffc107] opacity-75"><i class="fa-solid fa-triangle-exclamation text-md"></i></div>
+                                <div class="text-[#ffc107] opacity-75"><i class="fa-solid fa-plus-minus text-md"></i></div>
                             </div>
                         </div>
                     </div>
@@ -279,21 +280,21 @@
                                     <p class="text-[9px] font-bold text-[#7da6a6] uppercase">Total Lines</p>
                                     <h3 id="macro-total-lines" class="text-xl font-black text-white mt-0.5">0</h3>
                                 </div>
-                                <div class="text-[#7da6a6] opacity-80"><i class="fa-solid fa-barcode text-md"></i></div>
+                                <div class="text-[#7da6a6] opacity-80"><i class="fa-solid fa-receipt text-md"></i></div>
                             </div>
                             <div class="bg-[#090e0c]/50 p-3 rounded-lg border border-[#1d2c27]/70 flex items-center justify-between">
                                 <div>
                                     <p class="text-[9px] font-bold text-[#7da6a6] uppercase">Total Picks</p>
                                     <h3 id="macro-total-picks" class="text-xl font-black text-white mt-0.5">0</h3>
                                 </div>
-                                <div class="text-[#209d74] opacity-80"><i class="fa-solid fa-hand-holding-box text-md"></i></div>
+                                <div class="text-[#209d74] opacity-80"><i class="fa-solid fa-layer-group text-md"></i></div>
                             </div>
                         </div>
                     </div>
 
                     <div class="w-full xl:w-80 bg-[#111a17] border border-[#209d74]/30 p-4 rounded-xl space-y-3 shadow-md">
                         <div class="text-[10px] uppercase font-black tracking-widest text-[#209d74] border-b border-[#1d2c27] pb-1.5 flex items-center gap-1.5">
-                            <i class="fa-solid fa-arrow-down-to-square"></i> Inward Receiving
+                            <i class="fa-solid fa-arrow-down-to-square"></i> Totes Receiving
                         </div>
                         <div class="grid grid-cols-2 gap-3">
                             <div class="bg-[#090e0c]/50 p-3 rounded-lg border border-[#1d2c27]/70 flex items-center justify-between">
@@ -301,21 +302,21 @@
                                     <p class="text-[9px] font-bold text-[#7da6a6] uppercase">Totes Inward</p>
                                     <h3 id="macro-total-inward-totes" class="text-xl font-black text-white mt-0.5">0</h3>
                                 </div>
-                                <div class="text-[#4fb0c2] opacity-75"><i class="fa-solid fa-arrow-down-to-square text-md"></i></div>
+                                <div class="text-[#4fb0c2] opacity-75"><i class="fa-solid fa-download text-md"></i></div>
                             </div>
                             <div class="bg-[#090e0c]/50 p-3 rounded-lg border border-[#1d2c27]/70 flex items-center justify-between">
                                 <div>
-                                    <p class="text-[9px] font-bold text-[#7da6a6] uppercase">Qty Inwarded</p>
+                                    <p class="text-[9px] font-bold text-[#7da6a6] uppercase">Quantity Inwarded</p>
                                     <h3 id="macro-total-inward-qty" class="text-xl font-black text-white mt-0.5">0</h3>
                                 </div>
-                                <div class="text-[#4fb0c2] opacity-75"><i class="fa-solid fa-pallet text-md"></i></div>
+                                <div class="text-[#4fb0c2] opacity-75"><i class="fa-solid fa-cart-flatbed text-md"></i></div>
                             </div>
                         </div>
                     </div>
 
                     <div class="w-full xl:w-80 bg-[#111a17] border border-[#ffc107]/20 p-4 rounded-xl space-y-3 shadow-md">
                         <div class="text-[10px] uppercase font-black tracking-widest text-[#ffc107] border-b border-[#1d2c27] pb-1.5 flex items-center gap-1.5">
-                            <i class="fa-solid fa-calculator"></i> Inventory Audits
+                            <i class="fa-solid fa-calculator"></i> Cycle Count
                         </div>
                         <div class="grid grid-cols-2 gap-3">
                             <div class="bg-[#090e0c]/50 p-3 rounded-lg border border-[#1d2c27]/70 flex items-center justify-between">
@@ -330,7 +331,7 @@
                                     <p class="text-[9px] font-bold text-[#7da6a6] uppercase">Corrections</p>
                                     <h3 id="macro-total-cc-corrections" class="text-xl font-black text-[#ffc107] mt-0.5">0</h3>
                                 </div>
-                                <div class="text-[#ffc107] opacity-75"><i class="fa-solid fa-wrench text-md"></i></div>
+                                <div class="text-[#ffc107] opacity-75"><i class="fa-solid fa-plus-minus text-md"></i></div>
                             </div>
                         </div>
                     </div>
