@@ -9,18 +9,61 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* CSS variables to enable smooth real-time theme changing */
+        :root {
+            --color-bg-page: #F0EFE9;
+            --color-text-main: #0D2021;
+            --color-bg-card: #FFFFFF;
+            --color-border-card: #E0E0E0;
+            --color-bg-pending-box: rgba(255, 255, 255, 0.4);
+            --color-border-pending-box: rgba(224, 224, 224, 0.6);
+            --color-bg-inner: #F5F4EE;
+            --color-border-inner: #DCDCD6;
+            --color-text-muted: #505B5B;
+            --color-text-sub: #9DA0A0;
+            --color-bg-input: #FFFFFF;
+            --color-border-input: #9DA0A0;
+            --color-text-input: #0D2021;
+            --color-calendar-filter: none;
+            --color-scrollbar-track: #EAE9E2;
+            --color-scrollbar-thumb: #9DA0A0;
+            --color-scheme: light;
+            --color-teal-accent: #1C6D6D;
+        }
+
+        body.dark {
+            --color-bg-page: #090e0c;
+            --color-text-main: #e7ebea;
+            --color-bg-card: #111a17;
+            --color-border-card: #1d2c27;
+            --color-bg-pending-box: rgba(17, 26, 23, 0.2);
+            --color-border-pending-box: rgba(29, 44, 39, 0.4);
+            --color-bg-inner: rgba(9, 14, 12, 0.5);
+            --color-border-inner: rgba(29, 44, 39, 0.7);
+            --color-text-muted: #7da6a6;
+            --color-text-sub: #5e6b66;
+            --color-bg-input: #162420;
+            --color-border-input: #354e47;
+            --color-text-input: #ffffff;
+            --color-calendar-filter: invert(1) brightness(1.8);
+            --color-scrollbar-track: #090e0c;
+            --color-scrollbar-thumb: #1d2c27;
+            --color-scheme: dark;
+            --color-teal-accent: #4fb0c2;
+        }
+
         ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #090e0c; }
-        ::-webkit-scrollbar-thumb { background: #1d2c27; border-radius: 3px; }
+        ::-webkit-scrollbar-track { background: var(--color-scrollbar-track); }
+        ::-webkit-scrollbar-thumb { background: var(--color-scrollbar-thumb); border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #209d74; }
 
         input[type="date"] {
-            color-scheme: dark;
+            color-scheme: var(--color-scheme);
         }
 
         input[type="date"]::-webkit-calendar-picker-indicator {
             cursor: pointer;
-            filter: invert(1) brightness(1.8);
+            filter: var(--color-calendar-filter);
             opacity: 1 !important;
             padding: 2px;
             transition: transform 0.15s ease-in-out;
@@ -31,7 +74,7 @@
         }
     </style>
 </head>
-<body class="bg-[#090e0c] text-[#e7ebea] font-sans antialiased min-h-screen">
+<body class="bg-[var(--color-bg-page)] text-[var(--color-text-main)] font-sans antialiased min-h-screen transition-colors duration-200">
 
     <header class="bg-[#eef2f5] border-b border-slate-300 sticky top-0 z-50 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
@@ -62,57 +105,60 @@
                     </span>
                     <p id="engine-sync-time" class="text-[10px] text-slate-600 font-mono mt-1">Engine Sync Time: --:--:--</p>
                 </div>
+                <button onclick="toggleTheme()" class="bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 w-9 h-9 rounded-xl flex items-center justify-center cursor-pointer transition-all hover:scale-105 shadow-xs" title="Toggle Display Mode">
+                    <i id="theme-icon" class="fa-solid fa-moon text-xs"></i>
+                </button>
             </div>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
         <section class="space-y-4">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#111a17] p-4 rounded-xl border border-[#1d2c27] shadow-md">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[var(--color-bg-card)] p-4 rounded-xl border border-[var(--color-border-card)] shadow-md transition-colors duration-200">
                 <div class="flex items-center gap-2.5">
-                    <div class="bg-[#090e0c] text-[#209d74] p-2 rounded-lg border border-[#1d2c27] shadow-inner">
+                    <div class="bg-[var(--color-bg-page)] text-[#209d74] p-2 rounded-lg border border-[var(--color-border-inner)] shadow-inner transition-colors duration-200">
                         <i class="fa-solid fa-calendar-day text-sm"></i>
                     </div>
                     <div>
-                        <h2 class="text-xs font-black tracking-widest text-[#e7ebea] uppercase">Single-Day Focus Workspace</h2>
-                        <p class="text-[11px] text-[#7da6a6]">Carte+ Metrics for the selected day</p>
+                        <h2 class="text-xs font-black tracking-widest text-[var(--color-text-main)] uppercase transition-colors duration-200">Single-Day Focus Workspace</h2>
+                        <p class="text-[11px] text-[var(--color-text-muted)] transition-colors duration-200">Carte+ Metrics for the selected day</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-2 text-xs">
-                    <label for="single-date" class="font-bold text-[#7da6a6]">Target Day Focus:</label>
-                    <input type="date" id="single-date" onchange="refreshDashboardData(false)" onclick="this.showPicker()" class="bg-[#162420] border border-[#354e47] rounded-lg px-3 py-1.5 text-white font-mono font-bold tracking-wide focus:ring-1 focus:ring-[#209d74] focus:border-[#209d74] focus:outline-hidden transition-all shadow-inner">
+                    <label for="single-date" class="font-bold text-[var(--color-text-muted)] transition-colors duration-200">Target Day Focus:</label>
+                    <input type="date" id="single-date" onchange="refreshDashboardData(false)" onclick="this.showPicker()" class="bg-[var(--color-bg-input)] border border-[var(--color-border-input)] rounded-lg px-3 py-1.5 text-[var(--color-text-input)] font-mono font-bold tracking-wide focus:ring-1 focus:ring-[#209d74] focus:border-[#209d74] focus:outline-hidden transition-all shadow-inner">
                 </div>
             </div>
 
-            <div class="space-y-4 bg-[#111a17]/20 border border-[#1d2c27]/40 p-4 rounded-xl">
-                <div class="flex items-center gap-2 text-xs text-[#7da6a6] pl-1">
+            <div class="space-y-4 bg-[var(--color-bg-pending-box)] border border-[var(--color-border-pending-box)] p-4 rounded-xl transition-colors duration-200">
+                <div class="flex items-center gap-2 text-xs text-[var(--color-text-muted)] pl-1 transition-colors duration-200">
                     <i class="fa-solid fa-circle-dot text-[#ffc107] animate-pulse"></i>
-                    <span class="font-black text-[#e7ebea] uppercase tracking-wider text-[10px]">Pending Tasks</span>
-                    <span class="text-[#5e6b66]">(Real-Time Queue Data Summary)</span>
+                    <span class="font-black text-[var(--color-text-main)] uppercase tracking-wider text-[10px] transition-colors duration-200">Pending Tasks</span>
+                    <span class="text-[var(--color-text-sub)] transition-colors duration-200">(Real-Time Queue Data Summary)</span>
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="bg-[#111a17] p-5 rounded-xl border border-[#1d2c27] flex items-center justify-between shadow-xs">
+                    <div class="bg-[var(--color-bg-card)] p-5 rounded-xl border border-[var(--color-border-card)] flex items-center justify-between shadow-xs transition-colors duration-200">
                         <div>
-                            <p class="text-[10px] font-black text-[#7da6a6] uppercase tracking-widest">Total Pending Orders</p>
+                            <p class="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest transition-colors duration-200">Total Pending Orders</p>
                             <h3 id="p-orders" class="text-3xl font-black text-[#ffc107] tracking-tight mt-1">0</h3>
-                            <p class="text-[10px] text-[#5e6b66] mt-0.5">Active non-cancelled queue</p>
+                            <p class="text-[10px] text-[var(--color-text-sub)] mt-0.5 transition-colors duration-200">Active non-cancelled queue</p>
                         </div>
                         <div class="bg-[#241d08] text-[#ffc107] p-3 rounded-lg border border-[#3a2e0c]"><i class="fa-solid fa-boxes-stacked text-xl"></i></div>
                     </div>
-                    <div class="bg-[#111a17] p-5 rounded-xl border border-[#1d2c27] flex items-center justify-between shadow-xs">
+                    <div class="bg-[var(--color-bg-card)] p-5 rounded-xl border border-[var(--color-border-card)] flex items-center justify-between shadow-xs transition-colors duration-200">
                         <div>
-                            <p class="text-[10px] font-black text-[#7da6a6] uppercase tracking-widest">Total Pending Lines</p>
+                            <p class="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest transition-colors duration-200">Total Pending Lines</p>
                             <h3 id="p-lines" class="text-3xl font-black text-[#ffc107] tracking-tight mt-1">0</h3>
-                            <p class="text-[10px] text-[#5e6b66] mt-0.5">Excludes external item lines</p>
+                            <p class="text-[10px] text-[var(--color-text-sub)] mt-0.5 transition-colors duration-200">Excludes external item lines</p>
                         </div>
                         <div class="bg-[#241d08] text-[#ffc107] p-3 rounded-lg border border-[#3a2e0c]"><i class="fa-solid fa-receipt text-xl"></i></div>
                     </div>
-                    <div class="bg-[#111a17] p-5 rounded-xl border border-[#1d2c27] flex items-center justify-between shadow-xs">
+                    <div class="bg-[var(--color-bg-card)] p-5 rounded-xl border border-[var(--color-border-card)] flex items-center justify-between shadow-xs transition-colors duration-200">
                         <div>
-                            <p class="text-[10px] font-black text-[#7da6a6] uppercase tracking-widest">Total Pending Quantity</p>
+                            <p class="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest transition-colors duration-200">Total Pending Quantity</p>
                             <h3 id="p-units" class="text-3xl font-black text-[#ffc107] tracking-tight mt-1">0</h3>
-                            <p class="text-[10px] text-[#5e6b66] mt-0.5">Across all orders</p>
+                            <p class="text-[10px] text-[var(--color-text-sub)] mt-0.5 transition-colors duration-200">Across all orders</p>
                         </div>
                         <div class="bg-[#241d08] text-[#ffc107] p-3 rounded-lg border border-[#3a2e0c]"><i class="fa-solid fa-layer-group text-xl"></i></div>
                     </div>
@@ -120,82 +166,82 @@
             </div>
 
             <div class="space-y-2 pt-2">
-                <div class="flex items-center gap-2 text-xs text-[#7da6a6] pl-1">
+                <div class="flex items-center gap-2 text-xs text-[var(--color-text-muted)] pl-1 transition-colors duration-200">
                     <i class="fa-solid fa-database text-[#209d74]"></i>
-                    <span id="totals-section-header" class="font-black text-[#e7ebea] uppercase tracking-wider text-[10px]">Today Totals</span>
-                    <span id="target-date-label" class="text-[#7da6a6] text-xs font-mono">(------)</span>
+                    <span id="totals-section-header" class="font-black text-[var(--color-text-main)] uppercase tracking-wider text-[10px] transition-colors duration-200">Today Totals</span>
+                    <span id="target-date-label" class="text-[var(--color-text-muted)] text-xs font-mono transition-colors duration-200">(------)</span>
                 </div>
                 
                 <div class="flex flex-col gap-4 xl:flex-row xl:items-stretch">
-                    <div class="flex-1 bg-[#111a17] border border-[#1d2c27] p-4 rounded-xl space-y-3 shadow-md">
-                        <div class="text-[10px] uppercase font-black tracking-widest text-[#4fb0c2] border-b border-[#1d2c27] pb-1.5 flex items-center gap-1.5">
+                    <div class="flex-1 bg-[var(--color-bg-card)] border border-[var(--color-border-card)] p-4 rounded-xl space-y-3 shadow-md transition-colors duration-200">
+                        <div class="text-[10px] uppercase font-black tracking-widest text-[var(--color-teal-accent)] border-b border-[var(--color-border-inner)] pb-1.5 flex items-center gap-1.5 transition-colors duration-200">
                             <i class="fa-solid fa-box-open"></i> Fulfillment Performance
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                            <div class="bg-[#090e0c]/50 p-3 rounded-lg border border-[#1d2c27]/70 flex items-center justify-between">
+                            <div class="bg-[var(--color-bg-inner)] p-3 rounded-lg border border-[var(--color-border-inner)] flex items-center justify-between transition-colors duration-200">
                                 <div>
-                                    <p class="text-[9px] font-bold text-[#7da6a6] uppercase">Orders Fulfilled</p>
-                                    <h3 id="m-orders" class="text-xl font-black text-white mt-0.5">0</h3>
-                                    <p id="t-orders" class="text-[9px] text-[#209d74] font-mono font-bold mt-1 bg-[#090e0c] px-1.5 py-0.5 rounded-sm inline-block">0.0/hr</p>
+                                    <p class="text-[9px] font-bold text-[var(--color-text-muted)] uppercase transition-colors duration-200">Orders Fulfilled</p>
+                                    <h3 id="m-orders" class="text-xl font-black text-[var(--color-text-main)] mt-0.5 transition-colors duration-200">0</h3>
+                                    <p id="t-orders" class="text-[9px] text-[#209d74] font-mono font-bold mt-1 bg-[var(--color-bg-page)] px-1.5 py-0.5 rounded-sm inline-block transition-colors duration-200">0.0/hr</p>
                                 </div>
-                                <div class="text-[#4fb0c2] opacity-80"><i class="fa-solid fa-boxes-stacked text-md"></i></div>
+                                <div class="text-[var(--color-teal-accent)] opacity-80 transition-colors duration-200"><i class="fa-solid fa-boxes-stacked text-md"></i></div>
                             </div>
-                            <div class="bg-[#090e0c]/50 p-3 rounded-lg border border-[#1d2c27]/70 flex items-center justify-between">
+                            <div class="bg-[var(--color-bg-inner)] p-3 rounded-lg border border-[var(--color-border-inner)] flex items-center justify-between transition-colors duration-200">
                                 <div>
-                                    <p class="text-[9px] font-bold text-[#7da6a6] uppercase">Lines Processed</p>
-                                    <h3 id="m-lines" class="text-xl font-black text-white mt-0.5">0</h3>
-                                    <p id="t-lines" class="text-[9px] text-[#209d74] font-mono font-bold mt-1 bg-[#090e0c] px-1.5 py-0.5 rounded-sm inline-block">0.0/hr</p>
+                                    <p class="text-[9px] font-bold text-[var(--color-text-muted)] uppercase transition-colors duration-200">Lines Processed</p>
+                                    <h3 id="m-lines" class="text-xl font-black text-[var(--color-text-main)] mt-0.5 transition-colors duration-200">0</h3>
+                                    <p id="t-lines" class="text-[9px] text-[#209d74] font-mono font-bold mt-1 bg-[var(--color-bg-page)] px-1.5 py-0.5 rounded-sm inline-block transition-colors duration-200">0.0/hr</p>
                                 </div>
-                                <div class="text-[#7da6a6] opacity-80"><i class="fa-solid fa-receipt text-md"></i></div>
+                                <div class="text-[var(--color-text-muted)] opacity-80 transition-colors duration-200"><i class="fa-solid fa-receipt text-md"></i></div>
                             </div>
-                            <div class="bg-[#090e0c]/50 p-3 rounded-lg border border-[#1d2c27]/70 flex items-center justify-between">
+                            <div class="bg-[var(--color-bg-inner)] p-3 rounded-lg border border-[var(--color-border-inner)] flex items-center justify-between transition-colors duration-200">
                                 <div>
-                                    <p class="text-[9px] font-bold text-[#7da6a6] uppercase">Quantity Picked</p>
-                                    <h3 id="m-picks" class="text-xl font-black text-white mt-0.5">0</h3>
-                                    <p id="t-picks" class="text-[9px] text-[#209d74] font-mono font-bold mt-1 bg-[#090e0c] px-1.5 py-0.5 rounded-sm inline-block">0.0/hr</p>
+                                    <p class="text-[9px] font-bold text-[var(--color-text-muted)] uppercase transition-colors duration-200">Quantity Picked</p>
+                                    <h3 id="m-picks" class="text-xl font-black text-[var(--color-text-main)] mt-0.5 transition-colors duration-200">0</h3>
+                                    <p id="t-picks" class="text-[9px] text-[#209d74] font-mono font-bold mt-1 bg-[var(--color-bg-page)] px-1.5 py-0.5 rounded-sm inline-block transition-colors duration-200">0.0/hr</p>
                                 </div>
                                 <div class="text-[#209d74] opacity-80"><i class="fa-solid fa-layer-group text-md"></i></div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="w-full xl:w-80 bg-[#111a17] border border-[#209d74]/30 p-4 rounded-xl space-y-3 shadow-md">
-                        <div class="text-[10px] uppercase font-black tracking-widest text-[#209d74] border-b border-[#1d2c27] pb-1.5 flex items-center gap-1.5">
+                    <div class="w-full xl:w-80 bg-[var(--color-bg-card)] border border-[#209d74]/30 p-4 rounded-xl space-y-3 shadow-md transition-colors duration-200">
+                        <div class="text-[10px] uppercase font-black tracking-widest text-[#209d74] border-b border-[var(--color-border-inner)] pb-1.5 flex items-center gap-1.5 transition-colors duration-200">
                             <i class="fa-solid fa-arrow-down-to-square"></i> Totes Receiving
                         </div>
                         <div class="grid grid-cols-2 gap-3">
-                            <div class="bg-[#090e0c]/50 p-3 rounded-lg border border-[#1d2c27]/70 flex items-center justify-between">
+                            <div class="bg-[var(--color-bg-inner)] p-3 rounded-lg border border-[var(--color-border-inner)] flex items-center justify-between transition-colors duration-200">
                                 <div>
-                                    <p class="text-[9px] font-bold text-[#7da6a6] uppercase">Totes Inwarded</p>
-                                    <h3 id="m-inward-totes" class="text-xl font-black text-white mt-0.5">0</h3>
+                                    <p class="text-[9px] font-bold text-[var(--color-text-muted)] uppercase transition-colors duration-200">Totes Inwarded</p>
+                                    <h3 id="m-inward-totes" class="text-xl font-black text-[var(--color-text-main)] mt-0.5 transition-colors duration-200">0</h3>
                                 </div>
-                                <div class="text-[#4fb0c2] opacity-75"><i class="fa-solid fa-download text-md"></i></div>
+                                <div class="text-[var(--color-teal-accent)] opacity-75 transition-colors duration-200"><i class="fa-solid fa-download text-md"></i></div>
                             </div>
-                            <div class="bg-[#090e0c]/50 p-3 rounded-lg border border-[#1d2c27]/70 flex items-center justify-between">
+                            <div class="bg-[var(--color-bg-inner)] p-3 rounded-lg border border-[var(--color-border-inner)] flex items-center justify-between transition-colors duration-200">
                                 <div>
-                                    <p class="text-[9px] font-bold text-[#7da6a6] uppercase">Quantity Inwarded</p>
-                                    <h3 id="m-inward-qty" class="text-xl font-black text-white mt-0.5">0</h3>
+                                    <p class="text-[9px] font-bold text-[var(--color-text-muted)] uppercase transition-colors duration-200">Quantity Inwarded</p>
+                                    <h3 id="m-inward-qty" class="text-xl font-black text-[var(--color-text-main)] mt-0.5 transition-colors duration-200">0</h3>
                                 </div>
-                                <div class="text-[#4fb0c2] opacity-75"><i class="fa-solid fa-cart-flatbed text-md"></i></div>
+                                <div class="text-[var(--color-teal-accent)] opacity-75 transition-colors duration-200"><i class="fa-solid fa-cart-flatbed text-md"></i></div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="w-full xl:w-80 bg-[#111a17] border border-[#ffc107]/20 p-4 rounded-xl space-y-3 shadow-md">
-                        <div class="text-[10px] uppercase font-black tracking-widest text-[#ffc107] border-b border-[#1d2c27] pb-1.5 flex items-center gap-1.5">
+                    <div class="w-full xl:w-80 bg-[var(--color-bg-card)] border border-[#ffc107]/20 p-4 rounded-xl space-y-3 shadow-md transition-colors duration-200">
+                        <div class="text-[10px] uppercase font-black tracking-widest text-[#ffc107] border-b border-[var(--color-border-inner)] pb-1.5 flex items-center gap-1.5 transition-colors duration-200">
                             <i class="fa-solid fa-calculator"></i> Cycle Count
                         </div>
                         <div class="grid grid-cols-2 gap-3">
-                            <div class="bg-[#090e0c]/50 p-3 rounded-lg border border-[#1d2c27]/70 flex items-center justify-between">
+                            <div class="bg-[var(--color-bg-inner)] p-3 rounded-lg border border-[var(--color-border-inner)] flex items-center justify-between transition-colors duration-200">
                                 <div>
-                                    <p class="text-[9px] font-bold text-[#7da6a6] uppercase">Totes Counted</p>
-                                    <h3 id="m-cc-totes" class="text-xl font-black text-white mt-0.5">0</h3>
+                                    <p class="text-[9px] font-bold text-[var(--color-text-muted)] uppercase transition-colors duration-200">Totes Counted</p>
+                                    <h3 id="m-cc-totes" class="text-xl font-black text-[var(--color-text-main)] mt-0.5 transition-colors duration-200">0</h3>
                                 </div>
-                                <div class="text-[#7da6a6] opacity-75"><i class="fa-solid fa-clipboard-check text-md"></i></div>
+                                <div class="text-[var(--color-text-muted)] opacity-75 transition-colors duration-200"><i class="fa-solid fa-clipboard-check text-md"></i></div>
                             </div>
-                            <div class="bg-[#090e0c]/50 p-3 rounded-lg border border-[#1d2c27]/70 flex items-center justify-between">
+                            <div class="bg-[var(--color-bg-inner)] p-3 rounded-lg border border-[var(--color-border-inner)] flex items-center justify-between transition-colors duration-200">
                                 <div>
-                                    <p class="text-[9px] font-bold text-[#7da6a6] uppercase">Corrections</p>
+                                    <p class="text-[9px] font-bold text-[var(--color-text-muted)] uppercase transition-colors duration-200">Corrections</p>
                                     <h3 id="m-cc-corrections" class="text-xl font-black text-[#ffc107] mt-0.5">0</h3>
                                 </div>
                                 <div class="text-[#ffc107] opacity-75"><i class="fa-solid fa-plus-minus text-md"></i></div>
@@ -206,19 +252,19 @@
             </div>
 
             <div class="flex flex-col gap-6 pt-2">
-                <div class="bg-[#111a17] p-5 rounded-xl border border-[#1d2c27] space-y-4 shadow-xs">
+                <div class="bg-[var(--color-bg-card)] p-5 rounded-xl border border-[var(--color-border-card)] space-y-4 shadow-xs transition-colors duration-200">
                     <div>
-                        <h4 class="text-xs font-black text-white tracking-wider uppercase">Hourly Actual Counts</h4>
-                        <p class="text-[11px] text-[#7da6a6] mt-0.5">Absolute operational counts processed within each chronological hour boundary</p>
+                        <h4 class="text-xs font-black text-[var(--color-text-main)] tracking-wider uppercase transition-colors duration-200">Hourly Actual Counts</h4>
+                        <p class="text-[11px] text-[var(--color-text-muted)] mt-0.5 transition-colors duration-200">Absolute operational counts processed within each chronological hour boundary</p>
                     </div>
                     <div class="relative h-72 w-full">
                         <canvas id="chart-hourly-counts"></canvas>
                     </div>
                 </div>
-                <div class="bg-[#111a17] p-5 rounded-xl border border-[#1d2c27] space-y-4 shadow-xs">
+                <div class="bg-[var(--color-bg-card)] p-5 rounded-xl border border-[var(--color-border-card)] space-y-4 shadow-xs transition-colors duration-200">
                     <div>
-                        <h4 class="text-xs font-black text-white tracking-wider uppercase">Carte+ Hourly Throughput (UPH)</h4>
-                        <p class="text-[11px] text-[#7da6a6] mt-0.5">Throughput measured based on actual run time within each hour window</p>
+                        <h4 class="text-xs font-black text-[var(--color-text-main)] tracking-wider uppercase transition-colors duration-200">Carte+ Hourly Throughput (UPH)</h4>
+                        <p class="text-[11px] text-[var(--color-text-muted)] mt-0.5 transition-colors duration-200">Throughput measured based on actual run time within each hour window</p>
                     </div>
                     <div class="relative h-72 w-full">
                         <canvas id="chart-hourly-rates"></canvas>
@@ -227,27 +273,27 @@
             </div>
         </section>
 
-        <div class="border-b border-[#131d1a]"></div>
+        <div class="border-b border-[var(--color-border-card)] transition-colors duration-200"></div>
 
         <section class="space-y-4">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#111a17] p-4 rounded-xl border border-[#1d2c27] shadow-md">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[var(--color-bg-card)] p-4 rounded-xl border border-[var(--color-border-card)] shadow-md transition-colors duration-200">
                 <div class="flex items-center gap-2.5">
-                    <div class="bg-[#090e0c] text-[#209d74] p-2 rounded-lg border border-[#1d2c27] shadow-inner">
+                    <div class="bg-[var(--color-bg-page)] text-[#209d74] p-2 rounded-lg border border-[var(--color-border-inner)] shadow-inner transition-colors duration-200">
                         <i class="fa-solid fa-chart-line text-sm"></i>
                     </div>
                     <div>
-                        <h2 class="text-xs font-black tracking-widest text-[#e7ebea] uppercase">Macro Trend Exploration Workspace</h2>
-                        <p class="text-[11px] text-[#7da6a6]">Historical metrics and past average througputs</p>
+                        <h2 class="text-xs font-black tracking-widest text-[var(--color-text-main)] uppercase transition-colors duration-200">Macro Trend Exploration Workspace</h2>
+                        <p class="text-[11px] text-[var(--color-text-muted)] transition-colors duration-200">Historical metrics and past average througputs</p>
                     </div>
                 </div>
                 <div class="flex flex-wrap items-center gap-3 text-xs">
                     <div class="flex items-center gap-2">
-                        <label for="macro-start" class="font-bold text-[#7da6a6]">From:</label>
-                        <input type="date" id="macro-start" onclick="this.showPicker()" class="bg-[#162420] border border-[#354e47] rounded-lg px-2 py-1 text-white font-mono font-bold tracking-wide focus:outline-hidden focus:ring-1 focus:ring-[#209d74] focus:border-[#209d74] transition-all shadow-inner">
+                        <label for="macro-start" class="font-bold text-[var(--color-text-muted)] transition-colors duration-200">From:</label>
+                        <input type="date" id="macro-start" onclick="this.showPicker()" class="bg-[var(--color-bg-input)] border border-[var(--color-border-input)] rounded-lg px-2 py-1 text-[var(--color-text-input)] font-mono font-bold tracking-wide focus:outline-hidden focus:ring-1 focus:ring-[#209d74] focus:border-[#209d74] transition-all shadow-inner">
                     </div>
                     <div class="flex items-center gap-2">
-                        <label for="macro-end" class="font-bold text-[#7da6a6]">To:</label>
-                        <input type="date" id="macro-end" onclick="this.showPicker()" class="bg-[#162420] border border-[#354e47] rounded-lg px-2 py-1 text-white font-mono font-bold tracking-wide focus:outline-hidden focus:ring-1 focus:ring-[#209d74] focus:border-[#209d74] transition-all shadow-inner">
+                        <label for="macro-end" class="font-bold text-[var(--color-text-muted)] transition-colors duration-200">To:</label>
+                        <input type="date" id="macro-end" onclick="this.showPicker()" class="bg-[var(--color-bg-input)] border border-[var(--color-border-input)] rounded-lg px-2 py-1 text-[var(--color-text-input)] font-mono font-bold tracking-wide focus:outline-hidden focus:ring-1 focus:ring-[#209d74] focus:border-[#209d74] transition-all shadow-inner">
                     </div>
                     <button onclick="refreshDashboardData(false)" class="bg-[#209d74] hover:bg-[#1b8562] text-white font-black px-4 py-1.5 rounded-lg cursor-pointer transition-colors shadow-xs uppercase tracking-wider text-[11px]">
                         Apply  Filter
@@ -256,79 +302,79 @@
             </div>
 
             <div class="space-y-2">
-                <div class="flex items-center gap-2 text-xs text-[#7da6a6] pl-1">
-                    <i class="fa-solid fa-sigma text-[#4fb0c2]"></i>
-                    <span class="font-black text-[#e7ebea] uppercase tracking-wider text-[10px]">Filtered  Aggregations</span>
-                    <span class="text-[#5e6b66]">(Summed workspace performance metrics for selected window)</span>
+                <div class="flex items-center gap-2 text-xs text-[var(--color-text-muted)] pl-1 transition-colors duration-200">
+                    <i class="fa-solid fa-sigma text-[var(--color-teal-accent)] transition-colors duration-200"></i>
+                    <span class="font-black text-[var(--color-text-main)] uppercase tracking-wider text-[10px] transition-colors duration-200">Filtered  Aggregations</span>
+                    <span class="text-[var(--color-text-sub)] transition-colors duration-200">(Summed workspace performance metrics for selected window)</span>
                 </div>
                 
                 <div class="flex flex-col gap-4 xl:flex-row xl:items-stretch">
-                    <div class="flex-1 bg-[#111a17] border border-[#1d2c27] p-4 rounded-xl space-y-3 shadow-md">
-                        <div class="text-[10px] uppercase font-black tracking-widest text-[#4fb0c2] border-b border-[#1d2c27] pb-1.5 flex items-center gap-1.5">
+                    <div class="flex-1 bg-[var(--color-bg-card)] border border-[var(--color-border-card)] p-4 rounded-xl space-y-3 shadow-md transition-colors duration-200">
+                        <div class="text-[10px] uppercase font-black tracking-widest text-[var(--color-teal-accent)] border-b border-[var(--color-border-inner)] pb-1.5 flex items-center gap-1.5 transition-colors duration-200">
                             <i class="fa-solid fa-box-open"></i> Fulfillment Performance
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                            <div class="bg-[#090e0c]/50 p-3 rounded-lg border border-[#1d2c27]/70 flex items-center justify-between">
+                            <div class="bg-[var(--color-bg-inner)] p-3 rounded-lg border border-[var(--color-border-inner)] flex items-center justify-between transition-colors duration-200">
                                 <div>
-                                    <p class="text-[9px] font-bold text-[#7da6a6] uppercase">Total Orders</p>
-                                    <h3 id="macro-total-orders" class="text-xl font-black text-white mt-0.5">0</h3>
+                                    <p class="text-[9px] font-bold text-[var(--color-text-muted)] uppercase transition-colors duration-200">Total Orders</p>
+                                    <h3 id="macro-total-orders" class="text-xl font-black text-[var(--color-text-main)] mt-0.5 transition-colors duration-200">0</h3>
                                 </div>
-                                <div class="text-[#4fb0c2] opacity-80"><i class="fa-solid fa-boxes-stacked text-md"></i></div>
+                                <div class="text-[var(--color-teal-accent)] opacity-80 transition-colors duration-200"><i class="fa-solid fa-boxes-stacked text-md"></i></div>
                             </div>
-                            <div class="bg-[#090e0c]/50 p-3 rounded-lg border border-[#1d2c27]/70 flex items-center justify-between">
+                            <div class="bg-[var(--color-bg-inner)] p-3 rounded-lg border border-[var(--color-border-inner)] flex items-center justify-between transition-colors duration-200">
                                 <div>
-                                    <p class="text-[9px] font-bold text-[#7da6a6] uppercase">Total Lines</p>
-                                    <h3 id="macro-total-lines" class="text-xl font-black text-white mt-0.5">0</h3>
+                                    <p class="text-[9px] font-bold text-[var(--color-text-muted)] uppercase transition-colors duration-200">Total Lines</p>
+                                    <h3 id="macro-total-lines" class="text-xl font-black text-[var(--color-text-main)] mt-0.5 transition-colors duration-200">0</h3>
                                 </div>
-                                <div class="text-[#7da6a6] opacity-80"><i class="fa-solid fa-receipt text-md"></i></div>
+                                <div class="text-[var(--color-text-muted)] opacity-80 transition-colors duration-200"><i class="fa-solid fa-receipt text-md"></i></div>
                             </div>
-                            <div class="bg-[#090e0c]/50 p-3 rounded-lg border border-[#1d2c27]/70 flex items-center justify-between">
+                            <div class="bg-[var(--color-bg-inner)] p-3 rounded-lg border border-[var(--color-border-inner)] flex items-center justify-between transition-colors duration-200">
                                 <div>
-                                    <p class="text-[9px] font-bold text-[#7da6a6] uppercase">Total Picks</p>
-                                    <h3 id="macro-total-picks" class="text-xl font-black text-white mt-0.5">0</h3>
+                                    <p class="text-[9px] font-bold text-[var(--color-text-muted)] uppercase transition-colors duration-200">Total Picks</p>
+                                    <h3 id="macro-total-picks" class="text-xl font-black text-[var(--color-text-main)] mt-0.5 transition-colors duration-200">0</h3>
                                 </div>
                                 <div class="text-[#209d74] opacity-80"><i class="fa-solid fa-layer-group text-md"></i></div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="w-full xl:w-80 bg-[#111a17] border border-[#209d74]/30 p-4 rounded-xl space-y-3 shadow-md">
-                        <div class="text-[10px] uppercase font-black tracking-widest text-[#209d74] border-b border-[#1d2c27] pb-1.5 flex items-center gap-1.5">
+                    <div class="w-full xl:w-80 bg-[var(--color-bg-card)] border border-[#209d74]/30 p-4 rounded-xl space-y-3 shadow-md transition-colors duration-200">
+                        <div class="text-[10px] uppercase font-black tracking-widest text-[#209d74] border-b border-[var(--color-border-inner)] pb-1.5 flex items-center gap-1.5 transition-colors duration-200">
                             <i class="fa-solid fa-arrow-down-to-square"></i> Totes Receiving
                         </div>
                         <div class="grid grid-cols-2 gap-3">
-                            <div class="bg-[#090e0c]/50 p-3 rounded-lg border border-[#1d2c27]/70 flex items-center justify-between">
+                            <div class="bg-[var(--color-bg-inner)] p-3 rounded-lg border border-[var(--color-border-inner)] flex items-center justify-between transition-colors duration-200">
                                 <div>
-                                    <p class="text-[9px] font-bold text-[#7da6a6] uppercase">Totes Inwarded</p>
-                                    <h3 id="macro-total-inward-totes" class="text-xl font-black text-white mt-0.5">0</h3>
+                                    <p class="text-[9px] font-bold text-[var(--color-text-muted)] uppercase transition-colors duration-200">Totes Inwarded</p>
+                                    <h3 id="macro-total-inward-totes" class="text-xl font-black text-[var(--color-text-main)] mt-0.5 transition-colors duration-200">0</h3>
                                 </div>
-                                <div class="text-[#4fb0c2] opacity-75"><i class="fa-solid fa-download text-md"></i></div>
+                                <div class="text-[var(--color-teal-accent)] opacity-75 transition-colors duration-200"><i class="fa-solid fa-download text-md"></i></div>
                             </div>
-                            <div class="bg-[#090e0c]/50 p-3 rounded-lg border border-[#1d2c27]/70 flex items-center justify-between">
+                            <div class="bg-[var(--color-bg-inner)] p-3 rounded-lg border border-[var(--color-border-inner)] flex items-center justify-between transition-colors duration-200">
                                 <div>
-                                    <p class="text-[9px] font-bold text-[#7da6a6] uppercase">Quantity Inwarded</p>
-                                    <h3 id="macro-total-inward-qty" class="text-xl font-black text-white mt-0.5">0</h3>
+                                    <p class="text-[9px] font-bold text-[var(--color-text-muted)] uppercase transition-colors duration-200">Quantity Inwarded</p>
+                                    <h3 id="macro-total-inward-qty" class="text-xl font-black text-[var(--color-text-main)] mt-0.5 transition-colors duration-200">0</h3>
                                 </div>
-                                <div class="text-[#4fb0c2] opacity-75"><i class="fa-solid fa-cart-flatbed text-md"></i></div>
+                                <div class="text-[var(--color-teal-accent)] opacity-75 transition-colors duration-200"><i class="fa-solid fa-cart-flatbed text-md"></i></div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="w-full xl:w-80 bg-[#111a17] border border-[#ffc107]/20 p-4 rounded-xl space-y-3 shadow-md">
-                        <div class="text-[10px] uppercase font-black tracking-widest text-[#ffc107] border-b border-[#1d2c27] pb-1.5 flex items-center gap-1.5">
+                    <div class="w-full xl:w-80 bg-[var(--color-bg-card)] border border-[#ffc107]/20 p-4 rounded-xl space-y-3 shadow-md transition-colors duration-200">
+                        <div class="text-[10px] uppercase font-black tracking-widest text-[#ffc107] border-b border-[var(--color-border-inner)] pb-1.5 flex items-center gap-1.5 transition-colors duration-200">
                             <i class="fa-solid fa-calculator"></i> Cycle Count
                         </div>
                         <div class="grid grid-cols-2 gap-3">
-                            <div class="bg-[#090e0c]/50 p-3 rounded-lg border border-[#1d2c27]/70 flex items-center justify-between">
+                            <div class="bg-[var(--color-bg-inner)] p-3 rounded-lg border border-[var(--color-border-inner)] flex items-center justify-between transition-colors duration-200">
                                 <div>
-                                    <p class="text-[9px] font-bold text-[#7da6a6] uppercase">Totes Counted</p>
-                                    <h3 id="macro-total-cc-totes" class="text-xl font-black text-white mt-0.5">0</h3>
+                                    <p class="text-[9px] font-bold text-[var(--color-text-muted)] uppercase transition-colors duration-200">Totes Counted</p>
+                                    <h3 id="macro-total-cc-totes" class="text-xl font-black text-[var(--color-text-main)] mt-0.5 transition-colors duration-200">0</h3>
                                 </div>
-                                <div class="text-[#7da6a6] opacity-75"><i class="fa-solid fa-clipboard-check text-md"></i></div>
+                                <div class="text-[var(--color-text-muted)] opacity-75 transition-colors duration-200"><i class="fa-solid fa-clipboard-check text-md"></i></div>
                             </div>
-                            <div class="bg-[#090e0c]/50 p-3 rounded-lg border border-[#1d2c27]/70 flex items-center justify-between">
+                            <div class="bg-[var(--color-bg-inner)] p-3 rounded-lg border border-[var(--color-border-inner)] flex items-center justify-between transition-colors duration-200">
                                 <div>
-                                    <p class="text-[9px] font-bold text-[#7da6a6] uppercase">Corrections</p>
+                                    <p class="text-[9px] font-bold text-[var(--color-text-muted)] uppercase transition-colors duration-200">Corrections</p>
                                     <h3 id="macro-total-cc-corrections" class="text-xl font-black text-[#ffc107] mt-0.5">0</h3>
                                 </div>
                                 <div class="text-[#ffc107] opacity-75"><i class="fa-solid fa-plus-minus text-md"></i></div>
@@ -339,19 +385,19 @@
             </div>
 
             <div class="flex flex-col gap-6">
-                <div class="bg-[#111a17] p-5 rounded-xl border border-[#1d2c27] space-y-4 shadow-xs">
+                <div class="bg-[var(--color-bg-card)] p-5 rounded-xl border border-[var(--color-border-card)] space-y-4 shadow-xs transition-colors duration-200">
                     <div>
-                        <h4 class="text-xs font-black text-white tracking-wider uppercase">Fulfillment History</h4>
-                        <p class="text-[11px] text-[#7da6a6] mt-0.5">Compare fulfillment metrics across days</p>
+                        <h4 class="text-xs font-black text-[var(--color-text-main)] tracking-wider uppercase transition-colors duration-200">Fulfillment History</h4>
+                        <p class="text-[11px] text-[var(--color-text-muted)] mt-0.5 transition-colors duration-200">Compare fulfillment metrics across days</p>
                     </div>
                     <div class="relative h-72 w-full">
                         <canvas id="chart-macro-progression"></canvas>
                     </div>
                 </div>
-                <div class="bg-[#111a17] p-5 rounded-xl border border-[#1d2c27] space-y-4 shadow-xs">
+                <div class="bg-[var(--color-bg-card)] p-5 rounded-xl border border-[var(--color-border-card)] space-y-4 shadow-xs transition-colors duration-200">
                     <div>
-                        <h4 class="text-xs font-black text-white tracking-wider uppercase">Historical Average Throughput</h4>
-                        <p class="text-[11px] text-[#7da6a6] mt-0.5">Average Units Per Hour (UPH) across all fulfillments on each day</p>
+                        <h4 class="text-xs font-black text-[var(--color-text-main)] tracking-wider uppercase transition-colors duration-200">Historical Average Throughput</h4>
+                        <p class="text-[11px] text-[var(--color-text-muted)] mt-0.5 transition-colors duration-200">Average Units Per Hour (UPH) across all fulfillments on each day</p>
                     </div>
                     <div class="relative h-72 w-full">
                         <canvas id="chart-historical-averages"></canvas>
@@ -361,7 +407,7 @@
         </section>
     </main>
 
-    <footer class="max-w-7xl mx-auto px-4 text-center py-8 border-t border-[#131d1a] text-[#5e6b66] text-[10px] tracking-wide">
+    <footer class="max-w-7xl mx-auto px-4 text-center py-8 border-t border-[var(--color-border-card)] text-[var(--color-text-sub)] text-[10px] tracking-wide transition-colors duration-200">
         * Pending metrics show a real-time snapshot of unfulfilled orders. Past performance logs update on an hourly trigger loop matching Cartesian Kinetics WMS edge protocols.
     </footer>
 
@@ -371,13 +417,72 @@
 
         const COLOR_PRIMARY = "#52C79F";   
         const COLOR_SECONDARY = "#EAB71C"; 
-        const COLOR_TERTIARY = "#FFFFFF";  
         const COLOR_BORDER = "#1d2c27";    
 
         document.addEventListener("DOMContentLoaded", () => {
             initializeMacroBounds();
             refreshDashboardData(true);
         });
+
+        // Theme switching and chart adaptation controller logic
+        function toggleTheme() {
+            document.body.classList.toggle('dark');
+            const isDark = document.body.classList.contains('dark');
+            
+            const themeIcon = document.getElementById('theme-icon');
+            if (themeIcon) {
+                themeIcon.className = isDark ? 'fa-solid fa-sun text-xs' : 'fa-solid fa-moon text-xs';
+            }
+            
+            updateChartsThemeContext();
+        }
+
+        function getThemeColors() {
+            const isDark = document.body.classList.contains('dark');
+            return {
+                grid: isDark ? '#1d2c27' : '#E0E0E0',
+                label: isDark ? '#aeb7b4' : '#505B5B',
+                ordersLine: isDark ? '#FFFFFF' : '#0D2021'
+            };
+        }
+
+        function updateChartsThemeContext() {
+            const colors = getThemeColors();
+            
+            Object.keys(chartInstances).forEach(id => {
+                const chart = chartInstances[id];
+                if (!chart) return;
+                
+                // Adjust contrasting line dataset parameters for light/dark readability
+                if (id === 'hourlyCounts' || id === 'macroProgression') {
+                    if (chart.data.datasets[0]) {
+                        chart.data.datasets[0].borderColor = colors.ordersLine;
+                    }
+                }
+                
+                if (chart.options.scales) {
+                    if (chart.options.scales.x && chart.options.scales.x.ticks) {
+                        chart.options.scales.x.ticks.color = colors.label;
+                    }
+                    if (chart.options.scales.y) {
+                        if (chart.options.scales.y.ticks) {
+                            const isUphScale = chart.options.scales.y.title?.text?.includes('UPH');
+                            chart.options.scales.y.ticks.color = isUphScale ? COLOR_PRIMARY : colors.label;
+                        }
+                        if (chart.options.scales.y.grid) chart.options.scales.y.grid.color = colors.grid;
+                        if (chart.options.scales.y.title && !chart.options.scales.y.title.text?.includes('UPH')) {
+                            chart.options.scales.y.title.color = colors.label;
+                        }
+                    }
+                }
+                
+                if (chart.options.plugins && chart.options.plugins.legend && chart.options.plugins.legend.labels) {
+                    chart.options.plugins.legend.labels.color = colors.label;
+                }
+                
+                chart.update();
+            });
+        }
 
         function initializeMacroBounds() {
             const localOffsetDate = new Date();
@@ -431,7 +536,6 @@
                 }
             }
 
-            // POPULATE LIVE EXPANDED PENDING VALUES
             const live = data?.livePending || { pendingOrders: 0, pendingLines: 0, pendingUnits: 0 };
             document.getElementById('p-orders').innerText = (live.pendingOrders || 0).toLocaleString();
             document.getElementById('p-lines').innerText = (live.pendingLines || 0).toLocaleString();
@@ -494,6 +598,7 @@
             const canvas = document.getElementById('chart-hourly-rates');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
+            const colors = getThemeColors();
             
             chartInstances['hourlyRates'] = new Chart(ctx, {
                 type: 'bar',
@@ -505,10 +610,10 @@
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { labels: { color: '#aeb7b4', font: { size: 10, weight: 'bold' } } } },
+                    plugins: { legend: { labels: { color: colors.label, font: { size: 10, weight: 'bold' } } } },
                     scales: {
-                        x: { ticks: { color: '#6b7974', font: { size: 9 } }, grid: { display: false } },
-                        y: { type: 'linear', title: { display: true, text: 'UPH', color: COLOR_PRIMARY }, ticks: { color: COLOR_PRIMARY, precision: 0 }, grid: { color: COLOR_BORDER } }
+                        x: { ticks: { color: colors.label, font: { size: 9 } }, grid: { display: false } },
+                        y: { type: 'linear', title: { display: true, text: 'UPH', color: COLOR_PRIMARY }, ticks: { color: COLOR_PRIMARY, precision: 0 }, grid: { color: colors.grid } }
                     }
                 }
             });
@@ -519,23 +624,24 @@
             const canvas = document.getElementById('chart-hourly-counts');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
+            const colors = getThemeColors();
 
             chartInstances['hourlyCounts'] = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: hourlyTimeline.map(t => t.hour),
                     datasets: [
-                        { label: 'Orders', data: hourlyTimeline.map(t => t.orders), borderColor: COLOR_TERTIARY, backgroundColor: 'transparent', yAxisID: 'y', tension: 0.15, borderWidth: 2 },
+                        { label: 'Orders', data: hourlyTimeline.map(t => t.orders), borderColor: colors.ordersLine, backgroundColor: 'transparent', yAxisID: 'y', tension: 0.15, borderWidth: 2 },
                         { label: 'Lines', data: hourlyTimeline.map(t => t.lines), borderColor: COLOR_SECONDARY, backgroundColor: 'transparent', yAxisID: 'y', tension: 0.15, borderWidth: 2 },
                         { label: 'Units (Picks)', data: hourlyTimeline.map(t => t.picks), borderColor: COLOR_PRIMARY, backgroundColor: 'rgba(32, 157, 116, 0.05)', fill: true, yAxisID: 'y1', tension: 0.15, borderWidth: 2.5 }
                     ]
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { labels: { color: '#aeb7b4', font: { size: 10, weight: 'bold' } } } },
+                    plugins: { legend: { labels: { color: colors.label, font: { size: 10, weight: 'bold' } } } },
                     scales: {
-                        x: { ticks: { color: '#6b7974', font: { size: 9 } }, grid: { display: false } },
-                        y: { type: 'linear', position: 'left', title: { display: true, text: 'Orders & Lines', color: '#aeb7b4' }, ticks: { color: '#aeb7b4', precision: 0 }, grid: { color: COLOR_BORDER } },
+                        x: { ticks: { color: colors.label, font: { size: 9 } }, grid: { display: false } },
+                        y: { type: 'linear', position: 'left', title: { display: true, text: 'Orders & Lines', color: colors.label }, ticks: { color: colors.label, precision: 0 }, grid: { color: colors.grid } },
                         y1: { type: 'linear', position: 'right', title: { display: true, text: 'Units / Picks Count', color: COLOR_PRIMARY }, ticks: { color: COLOR_PRIMARY, precision: 0 }, grid: { drawOnChartArea: false } }
                     }
                 }
@@ -547,23 +653,24 @@
             const canvas = document.getElementById('chart-macro-progression');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
+            const colors = getThemeColors();
 
             chartInstances['macroProgression'] = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: trendChart.map(c => c.date),
                     datasets: [
-                        { label: 'Orders Fulfilled', borderColor: COLOR_TERTIARY, data: trendChart.map(c => c.orders), tension: 0.15, yAxisID: 'y', borderWidth: 2 },
+                        { label: 'Orders Fulfilled', borderColor: colors.ordersLine, data: trendChart.map(c => c.orders), tension: 0.15, yAxisID: 'y', borderWidth: 2 },
                         { label: 'Lines Processed', borderColor: COLOR_SECONDARY, data: trendChart.map(c => c.lines), tension: 0.15, yAxisID: 'y', borderWidth: 2 },
                         { label: 'Total Picks (Units)', borderColor: COLOR_PRIMARY, data: trendChart.map(c => c.picks), tension: 0.15, yAxisID: 'y1', borderWidth: 2.5 }
                     ]
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { labels: { color: '#aeb7b4', font: { size: 10, weight: 'bold' } } } },
+                    plugins: { legend: { labels: { color: colors.label, font: { size: 10, weight: 'bold' } } } },
                     scales: {
-                        x: { ticks: { color: '#aeb7b4' }, grid: { display: false } },
-                        y: { type: 'linear', position: 'left', title: { display: true, text: 'Orders & Lines Vol', color: '#aeb7b4' }, ticks: { color: '#aeb7b4', precision: 0 }, grid: { color: COLOR_BORDER } },
+                        x: { ticks: { color: colors.label }, grid: { display: false } },
+                        y: { type: 'linear', position: 'left', title: { display: true, text: 'Orders & Lines Vol', color: colors.label }, ticks: { color: colors.label, precision: 0 }, grid: { color: colors.grid } },
                         y1: { type: 'linear', position: 'right', title: { display: true, text: 'Total Picks', color: COLOR_PRIMARY }, ticks: { color: COLOR_PRIMARY, precision: 0 }, grid: { drawOnChartArea: false } }
                     }
                 }
@@ -575,6 +682,7 @@
             const canvas = document.getElementById('chart-historical-averages');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
+            const colors = getThemeColors();
 
             chartInstances['historicalAverages'] = new Chart(ctx, {
                 type: 'bar',
@@ -586,10 +694,10 @@
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { labels: { color: '#aeb7b4', font: { size: 10, weight: 'bold' } } } },
+                    plugins: { legend: { labels: { color: colors.label, font: { size: 10, weight: 'bold' } } } },
                     scales: {
-                        x: { ticks: { color: '#aeb7b4' }, grid: { display: false } },
-                        y: { type: 'linear', title: { display: true, text: 'Avg Units / Hr (UPH)', color: COLOR_PRIMARY }, ticks: { color: COLOR_PRIMARY, precision: 0 }, grid: { color: COLOR_BORDER } }
+                        x: { ticks: { color: colors.label }, grid: { display: false } },
+                        y: { type: 'linear', title: { display: true, text: 'Avg Units / Hr (UPH)', color: COLOR_PRIMARY }, ticks: { color: COLOR_PRIMARY, precision: 0 }, grid: { color: colors.grid } }
                     }
                 }
             });
