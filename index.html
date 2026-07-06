@@ -529,7 +529,7 @@
         }
 
         function renderWorkspaceComponents(data) {
-            document.getElementById('engine-sync-time').innerText = `Engine Sync Time: ${data?.lastRefreshed || 'N/A'}`;
+            document.getElementById('engine-sync-time').innerText = `Data Sync Time: ${data?.lastRefreshed || 'N/A'}`;
 
             if (data?.singleDayWorkspace && data.singleDayWorkspace.date) {
                 const serverTargetDate = data.singleDayWorkspace.date;
